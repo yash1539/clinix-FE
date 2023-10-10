@@ -1,0 +1,42 @@
+.dashboard {
+    display: flex;
+  }
+  
+  header {
+    background-color: #333;
+    color: #fff;
+    padding: 16px;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #eee;
+    padding: 16px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 16px;
+  }
+  

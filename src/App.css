@@ -1,0 +1,83 @@
+.home-wrap{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  overflow-y: hidden;
+}
+.txt-1{
+  color: #636363;
+  font-family: Manrope;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.72px;
+}
+.txt-2{
+  color: var(--Primary, #099AA4);
+font-family: Manrope;
+font-size: 60px;
+font-weight: 700;
+letter-spacing: 1.2px;
+position: relative;
+bottom: 6vh;
+}
+.txt-3{
+ color: #636363;
+font-family: Manrope;
+font-size: 24px;
+font-weight: 600;
+letter-spacing: 0.72px;
+position: relative;
+bottom: 12vh;
+left: 17vh;
+}
+.txt-5{
+  color: var(--Primary, #099AA4);
+
+font-family: Manrope;
+font-size: 48px;
+font-weight: 400;
+letter-spacing: 1.44px;
+ }
+ .txt-6{
+  color: #000;
+
+  font-family: Manrope;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.72px;
+ }
+ .img-wrap{
+  position: relative;
+  top: 10vh;
+ }
+ .login-btn{
+  display: flex;
+height: 56px;
+padding: 10px 56px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 8px;
+background: var(--Primary, #099AA4);
+border: none;
+color: #ffffff;
+
+ }
+ .spt-btn{
+  display: flex;
+height: 56px;
+padding: 10px 56px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 8px;
+background: transparent;
+border: none;
+color: #099AA4;
+
+ }
+ .btns-wrap{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+ }
