@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-
+import './registerPatient.css'
 function RegisterPatient() {
   const [patientData, setPatientData] = useState({
     pName: "",
     pNumber: "",
+    age: "",
+    gender: "",
+    mobile: "",
+    email: "",
+    address: "",
     problem: "",
   });
 
@@ -20,7 +25,11 @@ function RegisterPatient() {
 
   return (
     <div>
-      <h2>Register New Patient</h2>
+      <h2>Register Patient</h2>
+      <div className="tabContainer">
+        <div className="tab">New Patient</div>
+        <div className="tab">Existing Patient</div>
+      </div>
       <form onSubmit={handleSubmit}>
         <label>
           Patient Name:
@@ -28,6 +37,26 @@ function RegisterPatient() {
             type="text"
             name="pName"
             value={patientData.pName}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Age:
+          <input
+            type="text"
+            name="age"
+            value={patientData.age}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Gender:
+          <input
+            type="text"
+            name="gender"
+            value={patientData.gender}
             onChange={handleChange}
           />
         </label>
@@ -43,10 +72,39 @@ function RegisterPatient() {
         </label>
         <br />
         <label>
-          Problem:
+          Mobile:
+          <input
+            type="text"
+            name="mobile"
+            value={patientData.mobile}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Email:
+          <input
+            type="text"
+            name="email"
+            value={patientData.email}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Address:
           <textarea
-            name="pPrescription"
-            value={patientData.pPrescription}
+            name="address"
+            value={patientData.address}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Problem Description:
+          <textarea
+            name="problem"
+            value={patientData.problem}
             onChange={handleChange}
           />
         </label>
