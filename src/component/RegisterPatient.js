@@ -30,10 +30,13 @@ function RegisterPatient() {
   const [city, setCity] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [address, setAddress] = useState({
-    pinCode: pinCode,
-    state: state,
-    city: city,
+    pinCode: "",
+    state: "",
+    city: "",
   });
+  useEffect(() => {
+    console.log("address", address);
+  }, [address]);
 
   const handlePatientTypeChange = (event) => {
     setPatientType(event.target.value);
@@ -53,16 +56,17 @@ function RegisterPatient() {
     setHealthIssue(event.target.value);
   };
 
-  const handlePinCodeChange = (newPinCode) => {
-    setAddress({ ...address, pinCode: newPinCode });
+  const handlePinCodeChange = (event) => {
+    setAddress({ ...address, pinCode: event.target.value });
+    console.log("clicked");
   };
 
-  const handleStateChange = (newState) => {
-    setAddress({ ...address, state: newState });
+  const handleStateChange = (event) => {
+    setAddress({ ...address, state: event.target.value });
   };
 
-  const handleCityChange = (newCity) => {
-    setAddress({ ...address, city: newCity });
+  const handleCityChange = (event) => {
+    setAddress({ ...address, city: event.target.value });
   };
   const handleMobileNumberChange = (event) => {
     // Automatically add "+91" before the mobile number
@@ -208,7 +212,6 @@ function RegisterPatient() {
           <div>
             <div>Health Issue</div>
             <div>
-              {" "}
               <TextField
                 label="Health Issue"
                 value={healthIssue}
@@ -223,7 +226,7 @@ function RegisterPatient() {
               <FormControl variant="outlined" fullWidth margin="normal">
                 <InputLabel>State</InputLabel>
                 <Select
-                  value={state}
+                  value={address.state}
                   onChange={handleStateChange}
                   label="State"
                 >
@@ -238,7 +241,7 @@ function RegisterPatient() {
             <div>
               <TextField
                 label="City"
-                value={city}
+                value={address.city}
                 onChange={handleCityChange}
                 variant="outlined"
                 fullWidth
@@ -247,7 +250,7 @@ function RegisterPatient() {
               <TextField
                 label="Pin Code"
                 type="number"
-                value={pinCode}
+                value={address.pinCode}
                 onChange={handlePinCodeChange}
                 variant="outlined"
                 fullWidth
