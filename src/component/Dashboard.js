@@ -1,5 +1,5 @@
 // Dashboard.js
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,68 +13,81 @@ import {
   IconButton,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import "./Dashboard.css";
 
-import RegisterPatient from "./RegisterPatient"; // Import your RegisterPatient component
-import History from "./History"; // Import your History component
-import Appointments from "./Appointments"; // Import your Appointments component
-import Settings from "./Settings"; // Import your Settings component
+import RegisterPatient from "./RegisterPatient";
+import History from "./History";
+import Settings from "./Settings";
 
 function Dashboard() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
+  React.useEffect(() => {
+    navigate("/register-patient");
+  }, []);
+
+  const isTabSelected = (tabName) => {
+    return location.pathname === `/${tabName.toLowerCase().replace(" ", "-")}`;
+  };
+
   return (
-    <Router>
-      <div>
-        <CssBaseline />
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={toggleDrawer}
+    <div>
+      <CssBaseline />
+      <AppBar position="static" className="AppBar">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleDrawer}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6">My Clinic</Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer open={open} onClose={toggleDrawer}>
+        <List>
+          {[
+            "Register Patient",
+            "History",
+            "Appointments",
+            "Settings",
+            "Logout",
+          ].map((text, index) => (
+            <ListItem
+              key={text}
+              component={Link}
+              to={`/${text.toLowerCase().replace(" ", "-")}`}
+              className={isTabSelected(text) ? "selected-tab" : ""}
             >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6">My Clinic</Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer open={open} onClose={toggleDrawer}>
-          <List>
-            {[
-              "Register Patient",
-              "History",
-              "Appointments",
-              "Settings",
-              "Logout",
-            ].map((text, index) => (
-              <ListItem
-                button
-                key={text}
-                component={Link}
-                to={`/${text.toLowerCase().replace(" ", "-")}`}
-              >
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-        <Container>
-          <Routes>
-            <Route path="/register-patient" element={<RegisterPatient />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/appointments" element={<Appointments />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/logout">{/* Log the user out and redirect */}</Route>
-          </Routes>
-        </Container>
-      </div>
-    </Router>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+      <Container>
+        <Routes>
+          <Route path="/register-patient" element={<RegisterPatient />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/logout">{/* Log the user out and redirect */}</Route>
+        </Routes>
+      </Container>
+    </div>
   );
 }
 

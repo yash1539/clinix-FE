@@ -10,6 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   const imageUrl =
@@ -45,12 +46,10 @@ function App() {
     console.log("log", loginInfo?.message);
   }, [loginInfo]);
 
-  // Function to open the dialog
   const openSupportDialog = () => {
     setOpenDialog(true);
   };
 
-  // Function to close the dialog
   const closeSupportDialog = () => {
     setOpenDialog(false);
   };
@@ -89,7 +88,6 @@ function App() {
               onChange={handlePasswordChange}
             />
             <div className="btns-wrap">
-              {/* Open the dialog when "Support" button is clicked */}
               <button onClick={openSupportDialog} className="spt-btn">
                 Support
               </button>
@@ -100,7 +98,11 @@ function App() {
           </div>
         </div>
       ) : (
-        <Dashboard />
+        <Router>
+          <div>
+            <Dashboard />
+          </div>
+        </Router>
       )}
 
       <Dialog open={openDialog} onClose={closeSupportDialog}>

@@ -1,46 +1,21 @@
-.tabContainer {
-    display: flex;
-    justify-content: space-around;
-    background-color: #099aa4;
-    color: white;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .tab {
-    cursor: pointer;
-  }
-  
-  .tab:hover {
-    text-decoration: underline;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  label {
-    margin-bottom: 10px;
-  }
-  
-  input,
-  textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #099aa4;
-  }
-  
-  button {
-    background-color: #099aa4;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #077d89;
-  }
-  
+
+.heading{
+  color: #000;
+font-family: Manrope;
+font-size: 24px;
+font-weight: 600;
+letter-spacing: 0.72px;
+margin: 10px;
+}
+.box-wrap{
+  display: flex;
+  justify-content: space-around;
+  gap: 10vh;
+}
+.box-comp{
+  width: 621px;
+height: 388px;
+border-radius: 8px;
+ background: #FAFAF8;
+
+}

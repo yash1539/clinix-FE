@@ -1,117 +1,276 @@
-import React, { useState } from "react";
-import './registerPatient.css'
+import React, { useState, useEffect } from "react";
+import "./registerPatient.css";
+import useLogin from "../hooks/useLogin";
+
+import {
+  FormControl,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  Button,
+} from "@mui/material";
+
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+
 function RegisterPatient() {
-  const [patientData, setPatientData] = useState({
-    pName: "",
-    pNumber: "",
-    age: "",
-    gender: "",
-    mobile: "",
-    email: "",
-    address: "",
-    problem: "",
+  const { registerPatient, PatientInfo } = useLogin();
+
+  const [patientType, setPatientType] = useState("new");
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [healthIssue, setHealthIssue] = useState("");
+  const [pinCode, setPinCode] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [address, setAddress] = useState({
+    pinCode: pinCode,
+    state: state,
+    city: city,
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPatientData({ ...patientData, [name]: value });
+  const handlePatientTypeChange = (event) => {
+    setPatientType(event.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Send patientData to your server using API
-    console.log("Patient data submitted:", patientData);
+  const handleNameChange = (event) => {
+    setName(event.target.value);
   };
+
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
+  const handleAgeChange = (event) => {
+    setAge(event.target.value);
+  };
+  const handleHealthIssueChange = (event) => {
+    setHealthIssue(event.target.value);
+  };
+
+  const handlePinCodeChange = (newPinCode) => {
+    setAddress({ ...address, pinCode: newPinCode });
+  };
+
+  const handleStateChange = (newState) => {
+    setAddress({ ...address, state: newState });
+  };
+
+  const handleCityChange = (newCity) => {
+    setAddress({ ...address, city: newCity });
+  };
+  const handleMobileNumberChange = (event) => {
+    // Automatically add "+91" before the mobile number
+    const rawNumber = event.target.value;
+    if (!rawNumber.startsWith("+91")) {
+      setMobileNumber("+91" + rawNumber);
+    } else {
+      setMobileNumber(rawNumber);
+    }
+  };
+  const handleClear = () => {
+    setPatientType("new");
+    setName("");
+    setGender("");
+    setAge("");
+    setHealthIssue("");
+    setPinCode("");
+    setState("");
+    setCity("");
+    setMobileNumber("");
+  };
+
+  const handleSubmit = () => {
+    const data = {
+      pName: name,
+      pNumber: mobileNumber,
+      pDoctors: "dr.vive",
+      age: age,
+      gender: gender,
+      address: address,
+      problem: healthIssue,
+    };
+    registerPatient(data);
+  };
+  useEffect(() => {
+    console.log("PatientInfo", PatientInfo);
+  }, [PatientInfo]);
+
+  const indianStates = [
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chhattisgarh",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
+  ];
 
   return (
-    <div>
-      <h2>Register Patient</h2>
-      <div className="tabContainer">
-        <div className="tab">New Patient</div>
-        <div className="tab">Existing Patient</div>
+    <Container>
+      <div className="heading">Register Patient</div>
+      <div className="box-wrap">
+        <Box className="box-comp">
+          <div>Select the Patient</div>
+          <div>
+            <FormControl component="fieldset">
+              <RadioGroup
+                aria-label="patientType"
+                name="patientType"
+                value={patientType}
+                onChange={handlePatientTypeChange}
+                row
+              >
+                <FormControlLabel
+                  value="new"
+                  control={<Radio />}
+                  label="New Patient"
+                />
+                <FormControlLabel
+                  value="registered"
+                  control={<Radio />}
+                  label="Registered Patient"
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
+          <div>Patient Details</div>
+          <div>
+            <TextField
+              label="Patient Name"
+              value={name}
+              onChange={handleNameChange}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+          </div>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <TextField
+              label="Age"
+              type="number"
+              value={age}
+              onChange={handleAgeChange}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <FormControl variant="outlined" fullWidth margin="normal">
+              <InputLabel>Gender</InputLabel>
+              <Select
+                value={gender}
+                onChange={handleGenderChange}
+                label="Gender"
+              >
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <TextField
+            label="Mobile Number"
+            value={mobileNumber}
+            onChange={handleMobileNumberChange}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            required
+          />
+        </Box>
+        <Box className="box-comp">
+          <div>
+            <div>Health Issue</div>
+            <div>
+              {" "}
+              <TextField
+                label="Health Issue"
+                value={healthIssue}
+                onChange={handleHealthIssueChange}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
+            </div>
+            <div>Address Details</div>
+            <div>
+              <FormControl variant="outlined" fullWidth margin="normal">
+                <InputLabel>State</InputLabel>
+                <Select
+                  value={state}
+                  onChange={handleStateChange}
+                  label="State"
+                >
+                  {indianStates.map((state, index) => (
+                    <MenuItem key={index} value={state}>
+                      {state}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <TextField
+                label="City"
+                value={city}
+                onChange={handleCityChange}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Pin Code"
+                type="number"
+                value={pinCode}
+                onChange={handlePinCodeChange}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
+            </div>
+          </div>
+        </Box>
       </div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Patient Name:
-          <input
-            type="text"
-            name="pName"
-            value={patientData.pName}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Age:
-          <input
-            type="text"
-            name="age"
-            value={patientData.age}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Gender:
-          <input
-            type="text"
-            name="gender"
-            value={patientData.gender}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Phone Number:
-          <input
-            type="text"
-            name="pNumber"
-            value={patientData.pNumber}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Mobile:
-          <input
-            type="text"
-            name="mobile"
-            value={patientData.mobile}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input
-            type="text"
-            name="email"
-            value={patientData.email}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Address:
-          <textarea
-            name="address"
-            value={patientData.address}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Problem Description:
-          <textarea
-            name="problem"
-            value={patientData.problem}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Register Patient</button>
-      </form>
-    </div>
+      <div style={{ marginTop: 20 }}>
+        <Button variant="contained" color="secondary" onClick={handleClear}>
+          Clear
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginLeft: 10 }}
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
+      </div>
+    </Container>
   );
 }
 
