@@ -6,6 +6,7 @@ let baseurl = "https://app-oqundvwgva-uc.a.run.app";
 const useLogin = () => {
   const [loginInfo, setLoginInfo] = useState();
   const [PatientInfo, setPatientInfo] = useState();
+  const [findPatient, setFindPatien] = useState();
 
   const callLogin = (data) => {
     axios
@@ -16,6 +17,22 @@ const useLogin = () => {
 
           setLoginInfo(res.data);
           localStorage.setItem("token", token);
+        }
+      })
+      .catch((error) => console.log("Error: ", error));
+  };
+  const findPatientInfo = (mobileNumber) => {
+    const token = localStorage.getItem("token");
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+    axios
+      .get(`${baseurl}/getPatient/${mobileNumber}`, { headers: headers })
+      .then((res) => {
+        if (res?.data) {
+          setFindPatien(res.data);
         }
       })
       .catch((error) => console.log("Error: ", error));
@@ -38,7 +55,14 @@ const useLogin = () => {
       .catch((error) => console.log("Error: ", error));
   };
 
-  return { callLogin, loginInfo, registerPatient, PatientInfo };
+  return {
+    callLogin,
+    loginInfo,
+    registerPatient,
+    PatientInfo,
+    findPatientInfo,
+    findPatient,
+  };
 };
 
 export default useLogin;

@@ -18,16 +18,15 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
 function RegisterPatient() {
-  const { registerPatient, PatientInfo } = useLogin();
+  const { registerPatient, PatientInfo, findPatient, findPatientInfo } =
+    useLogin();
 
   const [patientType, setPatientType] = useState("new");
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [healthIssue, setHealthIssue] = useState("");
-  const [pinCode, setPinCode] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
+
   const [mobileNumber, setMobileNumber] = useState("");
   const [address, setAddress] = useState({
     pinCode: "",
@@ -35,8 +34,10 @@ function RegisterPatient() {
     city: "",
   });
   useEffect(() => {
-    console.log("address", address);
-  }, [address]);
+    if (mobileNumber.length === 13 && patientType !== "new") {
+      findPatientInfo(mobileNumber);
+    }
+  }, [mobileNumber]);
 
   const handlePatientTypeChange = (event) => {
     setPatientType(event.target.value);
@@ -58,7 +59,6 @@ function RegisterPatient() {
 
   const handlePinCodeChange = (event) => {
     setAddress({ ...address, pinCode: event.target.value });
-    console.log("clicked");
   };
 
   const handleStateChange = (event) => {
@@ -83,9 +83,12 @@ function RegisterPatient() {
     setGender("");
     setAge("");
     setHealthIssue("");
-    setPinCode("");
-    setState("");
-    setCity("");
+
+    setAddress({
+      pinCode: "",
+      state: "",
+      city: "",
+    });
     setMobileNumber("");
   };
 
@@ -101,9 +104,6 @@ function RegisterPatient() {
     };
     registerPatient(data);
   };
-  useEffect(() => {
-    console.log("PatientInfo", PatientInfo);
-  }, [PatientInfo]);
 
   const indianStates = [
     "Andhra Pradesh",
@@ -167,8 +167,23 @@ function RegisterPatient() {
           <div>Patient Details</div>
           <div>
             <TextField
+              label="Mobile Number"
+              value={mobileNumber}
+              onChange={handleMobileNumberChange}
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
               label="Patient Name"
-              value={name}
+              // value={name}
+              value={
+                findPatient?.message ===
+                "Patient details retrieved successfully"
+                  ? findPatient?.patientData.pName
+                  : name
+              }
               onChange={handleNameChange}
               variant="outlined"
               fullWidth
@@ -179,7 +194,12 @@ function RegisterPatient() {
             <TextField
               label="Age"
               type="number"
-              value={age}
+              value={
+                findPatient?.message ===
+                "Patient details retrieved successfully"
+                  ? findPatient?.patientData.age
+                  : age
+              }
               onChange={handleAgeChange}
               variant="outlined"
               fullWidth
@@ -188,7 +208,12 @@ function RegisterPatient() {
             <FormControl variant="outlined" fullWidth margin="normal">
               <InputLabel>Gender</InputLabel>
               <Select
-                value={gender}
+                value={
+                  findPatient?.message ===
+                  "Patient details retrieved successfully"
+                    ? findPatient?.patientData.gender
+                    : gender
+                }
                 onChange={handleGenderChange}
                 label="Gender"
               >
@@ -198,15 +223,6 @@ function RegisterPatient() {
               </Select>
             </FormControl>
           </div>
-          <TextField
-            label="Mobile Number"
-            value={mobileNumber}
-            onChange={handleMobileNumberChange}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-          />
         </Box>
         <Box className="box-comp">
           <div>
@@ -214,7 +230,12 @@ function RegisterPatient() {
             <div>
               <TextField
                 label="Health Issue"
-                value={healthIssue}
+                value={
+                  findPatient?.message ===
+                  "Patient details retrieved successfully"
+                    ? findPatient?.patientData.visits[0].problem
+                    : healthIssue
+                }
                 onChange={handleHealthIssueChange}
                 variant="outlined"
                 fullWidth
@@ -226,7 +247,12 @@ function RegisterPatient() {
               <FormControl variant="outlined" fullWidth margin="normal">
                 <InputLabel>State</InputLabel>
                 <Select
-                  value={address.state}
+                  value={
+                    findPatient?.message ===
+                    "Patient details retrieved successfully"
+                      ? findPatient?.patientData?.address.state
+                      : address.state
+                  }
                   onChange={handleStateChange}
                   label="State"
                 >
@@ -241,7 +267,12 @@ function RegisterPatient() {
             <div>
               <TextField
                 label="City"
-                value={address.city}
+                value={
+                  findPatient?.message ===
+                  "Patient details retrieved successfully"
+                    ? findPatient?.patientData?.address.city
+                    : address.city
+                }
                 onChange={handleCityChange}
                 variant="outlined"
                 fullWidth
@@ -250,7 +281,12 @@ function RegisterPatient() {
               <TextField
                 label="Pin Code"
                 type="number"
-                value={address.pinCode}
+                value={
+                  findPatient?.message ===
+                  "Patient details retrieved successfully"
+                    ? findPatient?.patientData?.address.pinCode
+                    : address.pinCode
+                }
                 onChange={handlePinCodeChange}
                 variant="outlined"
                 fullWidth
